@@ -14,6 +14,8 @@ public class GameScreen extends View implements Runnable {
     private int i;
     private Paint paint;
 
+    private InfiniteBackground bg;
+
     public GameScreen(Context context) {
         super(context);
         this.init();
@@ -21,12 +23,13 @@ public class GameScreen extends View implements Runnable {
 
     public void update(){
         if (update){
-            i++;
+            bg.update();
         }
     }
 
     protected void onDraw(Canvas canvas){
-        canvas.drawText("Valor do i: " + i, 50, 100, paint);
+        //canvas.drawText("Valor do i: " + i, 50, 100, paint);
+        bg.drow(canvas);
     }
 
     public void init(){
@@ -34,6 +37,13 @@ public class GameScreen extends View implements Runnable {
         this.update = true;
         paint = new Paint();
         paint.setColor(Color.BLACK);
+
+        // criar objetos do jogo
+        bg = new InfiniteBackground();
+        // definir fator de distorcao
+        GameParameterSingleton.DISTORTION = (float) GameParameterSingleton.SCREEN_HEIGHT / bg.getHeight();
+        bg.setWidth((int) (bg.getWidth() * GameParameterSingleton.DISTORTION));
+        bg.setHeight((int) (bg.getHeight() * GameParameterSingleton.DISTORTION));
     }
 
     @Override
