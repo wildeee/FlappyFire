@@ -42,8 +42,9 @@ public class GameScreen extends View implements Runnable {
         bg = new InfiniteBackground();
         // definir fator de distorcao
         GameParameterSingleton.DISTORTION = (float) GameParameterSingleton.SCREEN_HEIGHT / bg.getHeight();
-        bg.setWidth((int) (bg.getWidth() * GameParameterSingleton.DISTORTION));
-        bg.setHeight((int) (bg.getHeight() * GameParameterSingleton.DISTORTION));
+
+        bg.updateDistortion();
+
     }
 
     @Override

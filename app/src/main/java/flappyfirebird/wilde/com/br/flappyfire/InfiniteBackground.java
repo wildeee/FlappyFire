@@ -19,6 +19,8 @@ public class InfiniteBackground {
 
     private static final String TAG = "InfiniteBackground";
 
+    private static final int STEP = 5;
+
     public InfiniteBackground(){
         try {
             InputStream is = GameParameterSingleton.assetManager.open("cenario1.png");
@@ -36,16 +38,51 @@ public class InfiniteBackground {
         }
     }
 
+    public void updateDistortion(){
+        setWidth((int) (getWidth() * GameParameterSingleton.DISTORTION));
+        setHeight((int) (getHeight() * GameParameterSingleton.DISTORTION));
+
+        first.left = 0;
+        first.top = 0;
+        first.right = width;
+        first.bottom = height;
+
+        second.top = 0;
+        second.left = width;
+        second.right = second.left + width;
+        second.bottom = height;
+
+    }
+
     public void update(){
         // como se move
-        first.left = 0;
-        first.right = width;
+        int passoDistorcido = (int) (STEP * GameParameterSingleton.DISTORTION);
+        first.left -= passoDistorcido;
+        first.right -= passoDistorcido;
         first.top = 0;
-        first.bottom = height;
+        first.bottom = getHeight();
+
+        second.top = 0;
+        second.bottom = getHeight();
+        second.left -= passoDistorcido;
+        second.right -= passoDistorcido;
+
+        if (first.right <= 0){
+            first.left = second.right;
+            first.right = second.right + width;
+        }
+
+        if (second.right <= 0){
+            second.left = first.right;
+            second.right = first.right + width;
+        }
     }
 
     public void drow(Canvas canvas){
+
         canvas.drawBitmap(figura, src, first, null);
+        canvas.drawBitmap(figura, src, second, null);
+
     }
 
     public int getWidth() {
