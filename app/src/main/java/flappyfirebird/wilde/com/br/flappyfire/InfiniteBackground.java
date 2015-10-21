@@ -56,7 +56,7 @@ public class InfiniteBackground {
 
     public void update(){
         // como se move
-        int passoDistorcido = (int) (STEP * GameParameterSingleton.DISTORTION);
+        final int passoDistorcido = (int) (STEP * GameParameterSingleton.DISTORTION);
         first.left -= passoDistorcido;
         first.right -= passoDistorcido;
         first.top = 0;

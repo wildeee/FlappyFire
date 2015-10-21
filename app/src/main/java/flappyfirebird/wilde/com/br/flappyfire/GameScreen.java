@@ -15,6 +15,7 @@ public class GameScreen extends View implements Runnable {
     private Paint paint;
 
     private InfiniteBackground bg;
+    private Bird bird;
 
     public GameScreen(Context context) {
         super(context);
@@ -24,12 +25,14 @@ public class GameScreen extends View implements Runnable {
     public void update(){
         if (update){
             bg.update();
+            bird.update();
         }
     }
 
     protected void onDraw(Canvas canvas){
         //canvas.drawText("Valor do i: " + i, 50, 100, paint);
         bg.drow(canvas);
+        bird.drow(canvas);
     }
 
     public void init(){
@@ -44,6 +47,11 @@ public class GameScreen extends View implements Runnable {
         GameParameterSingleton.DISTORTION = (float) GameParameterSingleton.SCREEN_HEIGHT / bg.getHeight();
 
         bg.updateDistortion();
+
+        bird = new Bird();
+        bird.setX(0);
+        bird.setY(0);
+        bird.updateDistortion();
 
     }
 
