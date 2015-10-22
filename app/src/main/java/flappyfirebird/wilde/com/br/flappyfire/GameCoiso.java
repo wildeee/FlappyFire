@@ -18,6 +18,11 @@ public abstract class GameCoiso {
         height = (int) (height * GameParameterSingleton.DISTORTION);
     }
 
+    public void updateDistortion(double distortionPercent){
+        width = (int) (width * GameParameterSingleton.DISTORTION * distortionPercent);
+        height = (int) (height * GameParameterSingleton.DISTORTION * distortionPercent);
+    }
+
     public int getX() {
         return x;
     }

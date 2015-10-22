@@ -62,4 +62,5 @@ public class Bird extends GameCoiso {
     public void drow(Canvas canvas) {
         canvas.drawBitmap(figura, src, dst, null);;
     }
+
 }

@@ -49,9 +49,9 @@ public class GameScreen extends View implements Runnable {
         bg.updateDistortion();
 
         bird = new Bird();
-        bird.setX(0);
-        bird.setY(0);
-        bird.updateDistortion();
+        bird.setX(10);
+        bird.setY(10);
+        bird.updateDistortion(0.5); // Diminuindo a distorção, que estava zicada.
 
     }
 
