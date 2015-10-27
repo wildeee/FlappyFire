@@ -16,6 +16,7 @@ public class GameScreen extends View implements Runnable {
 
     private InfiniteBackground bg;
     private Bird bird;
+    private Obstacle obstacle;
 
     public GameScreen(Context context) {
         super(context);
@@ -26,6 +27,7 @@ public class GameScreen extends View implements Runnable {
         if (update){
             bg.update();
             bird.update();
+            obstacle.update();
         }
     }
 
@@ -33,6 +35,7 @@ public class GameScreen extends View implements Runnable {
         //canvas.drawText("Valor do i: " + i, 50, 100, paint);
         bg.drow(canvas);
         bird.drow(canvas);
+        obstacle.drow(canvas);
     }
 
     public void init(){
@@ -52,6 +55,11 @@ public class GameScreen extends View implements Runnable {
         bird.setX(10);
         bird.setY(10);
         bird.updateDistortion(0.5); // Diminuindo a distorção, que estava zicada.
+
+        obstacle = new Obstacle();
+        obstacle.setX(1000);
+        obstacle.setY(0);
+        obstacle.updateDistortion();
 
     }
 

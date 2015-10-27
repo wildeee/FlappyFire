@@ -23,7 +23,7 @@ public class InfiniteBackground {
 
     public InfiniteBackground(){
         try {
-            InputStream is = GameParameterSingleton.assetManager.open("cenario1.png");
+            InputStream is = GameParameterSingleton.assetManager.open("teste.jpg");
             figura = BitmapFactory.decodeStream(is);
             height = figura.getHeight();
             width = figura.getWidth();
