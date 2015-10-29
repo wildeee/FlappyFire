@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/bg_old2.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/bird.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/cenario1.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/cenario2.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/flapbird.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/obstaculo.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/obstaculo2.png" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/obstaculo_animado.png" charset="windows-1252" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

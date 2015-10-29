@@ -1,32 +1,69 @@
 package flappyfirebird.wilde.com.br.flappyfire;
 
+import android.graphics.Canvas;
+
 public class Structure {
-    private Obstacle up;
-    private Obstacle down;
+
+    private Obstacle obstacleUp;
+    private Obstacle obstacleDown;
     private Gap gap;
     private boolean valid;
 
-    public Structure() {
+    public Structure(){
         valid = true;
-        up = new Obstacle();
-        up.setX(GameParameterSingleton.SCREEN_WIDTH);
-        int y = (int) (Math.random() % 1000) % up.getHeight();
-        y = y > 0 ? y * -1 : y;
-        up.setY(y);
+        obstacleUp = new Obstacle(GameParameterSingleton.SCREEN_WIDTH, 0);
+        int y = ((int)(Math.random()*1000))%(obstacleUp.getHeight());
+        y = (y>0)?y*-1:y;
+        obstacleUp.setY(y);
 
-        up.updateDistortion();
-        gap = new Gap(up.getX(), up.getHeight(), 40, 60);
+        obstacleUp.updateDistortion();
+
+        gap = new Gap(obstacleUp.getX(), obstacleUp.getY() + obstacleUp.getHeight(), 40, 55 );
         gap.updateDistortion();
+        obstacleDown = new Obstacle(gap.getX(), gap.getY()+gap.getHeight());
+        obstacleDown.updateDistortion();
 
-        down = new Obstacle();
-        down.setX(up.getX());
-        down.setY(gap.getY() + gap.getHeight());
-        down.updateDistortion();
+        obstacleUp.getBoundingBox().setX(obstacleUp.getX());
+        obstacleUp.getBoundingBox().setY(obstacleUp.getY());
+        obstacleUp.getBoundingBox().setWidth(obstacleUp.getWidth());
+        obstacleUp.getBoundingBox().setHeight(obstacleUp.getHeight());
+
+        obstacleDown.getBoundingBox().setX(obstacleDown.getX());
+        obstacleDown.getBoundingBox().setY(obstacleDown.getY());
+        obstacleDown.getBoundingBox().setWidth(obstacleDown.getWidth());
+        obstacleDown.getBoundingBox().setHeight(obstacleDown.getHeight());
+
+        gap.getBoundingBox().setX(gap.getX());
+        gap.getBoundingBox().setY(gap.getY());
+        gap.getBoundingBox().setWidth(gap.getWidth());
+        gap.getBoundingBox().setHeight(gap.getHeight());
+
     }
 
     public void update(){
-        up.update();
+        obstacleUp.update();
+        obstacleDown.update();
         gap.update();
-        down.update();
+
     }
+    public void draw(Canvas canvas){
+        obstacleUp.draw(canvas);
+        gap.draw(canvas);
+        obstacleDown.draw(canvas);
+
+    }
+
+    public Obstacle getObstacleUp() {
+        return obstacleUp;
+    }
+
+
+    public Obstacle getObstacleDown() {
+        return obstacleDown;
+    }
+
+    public Gap getGap() {
+        return gap;
+    }
+
 }

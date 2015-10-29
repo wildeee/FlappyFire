@@ -1,87 +1,66 @@
 package flappyfirebird.wilde.com.br.flappyfire;
 
+import java.io.InputStream;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
 
-import java.io.InputStream;
-
 public class InfiniteBackground {
-
-    private Bitmap figura;
-    private int height;
+    private int x;
+    private int y;
     private int width;
-    private Rect src;
-    private Rect first;
-    private Rect second;
+    private int height;
 
-    private static final String TAG = "InfiniteBackground";
+    private Bitmap bitmap;
+    private Rect   src;
+    private Rect   first;
+    private Rect   second;
+    private static final int STEP=5;
 
-    private static final int STEP = 5;
+    private static final String TAG="InfiniteBackground";
 
     public InfiniteBackground(){
-        try {
-            InputStream is = GameParameterSingleton.assetManager.open("teste.jpg");
-            figura = BitmapFactory.decodeStream(is);
-            height = figura.getHeight();
-            width = figura.getWidth();
+        try{
+            InputStream is = GameParameterSingleton.assetManager.open("cenario1.png");
+            bitmap = BitmapFactory.decodeStream(is);
 
-            src = new Rect(0, 0, width, height);
-            first = new Rect();
-            second = new Rect();
+            src    = new Rect(0,0,bitmap.getWidth(),bitmap.getHeight());
+            width  = bitmap.getWidth();
+            height = bitmap.getHeight();
 
+            first = new Rect(0,0,width,height);
+            second = new Rect(width-1,0,width+width,height);
         }
-        catch (Exception ex){
-            Log.d(TAG, "Erro ao decodificar imagem");
+        catch(Exception e){
+            Log.d(TAG,"Erro ao carregar imagem");
         }
-    }
-
-    public void updateDistortion(){
-        setWidth((int) (getWidth() * GameParameterSingleton.DISTORTION));
-        setHeight((int) (getHeight() * GameParameterSingleton.DISTORTION));
-
-        first.left = 0;
-        first.top = 0;
-        first.right = width;
-        first.bottom = height;
-
-        second.top = 0;
-        second.left = width;
-        second.right = second.left + width;
-        second.bottom = height;
-
     }
 
     public void update(){
-        // como se move
-        final int passoDistorcido = (int) (STEP * GameParameterSingleton.DISTORTION);
-        first.left -= passoDistorcido;
-        first.right -= passoDistorcido;
-        first.top = 0;
-        first.bottom = getHeight();
 
-        second.top = 0;
-        second.bottom = getHeight();
-        second.left -= passoDistorcido;
+        int passoDistorcido = (int)(this.STEP * GameParameterSingleton.DISTORTION);
+
+        first.left   -= passoDistorcido;
+        first.right  -= passoDistorcido;
+        second.left  -= passoDistorcido;
         second.right -= passoDistorcido;
 
         if (first.right <= 0){
-            first.left = second.right;
+            first.left =  second.right;
             first.right = second.right + width;
         }
 
         if (second.right <= 0){
-            second.left = first.right;
+            second.left  = first.right;
             second.right = first.right + width;
         }
     }
-
-    public void drow(Canvas canvas){
-
-        canvas.drawBitmap(figura, src, first, null);
-        canvas.drawBitmap(figura, src, second, null);
+    public void draw(Canvas canvas){
+        canvas.drawBitmap(bitmap, src, first, null);
+        canvas.drawBitmap(bitmap, src, second, null);
 
     }
 
@@ -99,5 +78,14 @@ public class InfiniteBackground {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public void updateDistortion(){
+        width = (int)(width*GameParameterSingleton.DISTORTION);
+        height = (int)(height*GameParameterSingleton.DISTORTION);
+        first.right = first.left + width;
+        first.bottom = first.top + height;
+        second.right = second.left + width;
+        second.bottom = second.top + height;
     }
 }

@@ -4,76 +4,184 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class GameScreen extends View implements Runnable {
 
-    private static final String TAG = "GameScreen";
+    private boolean running;
+    // private int i;
+    // private Paint paint;
+    private Thread thread;
+    private Bird bird;
+    private InfiniteBackground bg;
     private boolean update;
-    private int i;
+    private Structure combo;
+    private static final String TAG="MinhaView";
+
+    private Handler handler;
+
+    private boolean colidiuGap=false;
     private Paint paint;
 
-    private InfiniteBackground bg;
-    private Bird bird;
-    private Obstacle obstacle;
 
     public GameScreen(Context context) {
         super(context);
-        this.init();
+        // TODO Auto-generated constructor stub
+        init();
+
+
     }
 
-    public void update(){
-        if (update){
-            bg.update();
-            bird.update();
-            obstacle.update();
-        }
-    }
+    public void init() {
+        // TODO Auto-generated method stub
 
-    protected void onDraw(Canvas canvas){
-        //canvas.drawText("Valor do i: " + i, 50, 100, paint);
-        bg.drow(canvas);
-        bird.drow(canvas);
-        obstacle.drow(canvas);
-    }
-
-    public void init(){
-        this.i = 0;
-        this.update = true;
-        paint = new Paint();
-        paint.setColor(Color.BLACK);
-
-        // criar objetos do jogo
+        GameParameterSingleton.PONTOS = 0;
+        running = true;
+        update = true;
         bg = new InfiniteBackground();
-        // definir fator de distorcao
-        GameParameterSingleton.DISTORTION = (float) GameParameterSingleton.SCREEN_HEIGHT / bg.getHeight();
+        GameParameterSingleton.DISTORTION = (float) GameParameterSingleton.SCREEN_HEIGHT
+                / bg.getHeight();
 
+
+        Log.d(TAG,"Distortion = "+GameParameterSingleton.DISTORTION);
         bg.updateDistortion();
 
         bird = new Bird();
-        bird.setX(10);
-        bird.setY(10);
-        bird.updateDistortion(0.5); // Diminuindo a distorção, que estava zicada.
+        Log.d("TAG","Bird = "+bird.getWidth()+","+bird.getHeight());
 
-        obstacle = new Obstacle();
-        obstacle.setX(1000);
-        obstacle.setY(0);
-        obstacle.updateDistortion();
+
+        combo = new Structure();
+
+        bird.setX(50);
+        bird.setY(50);
+
+
+        bird.updateDistortion();
+        Log.d("TAG","BirdD = "+bird.getWidth()+","+bird.getHeight());
+
+        // ajustando bounding box do bird;
+        bird.getBoundingBox().setWidth((int)(bird.getWidth()*0.10f));
+        bird.getBoundingBox().setHeight((int)(bird.getHeight()*0.10));
+        bird.getBoundingBox().setX(bird.getX() + (int)((bird.getWidth() - bird.getBoundingBox().getWidth())*.10f));
+        bird.getBoundingBox().setY(bird.getY() + (int)((bird.getHeight() - bird.getBoundingBox().getHeight())*0.10f));
+
+
+        Log.d(TAG,bird.getBoundingBox().toString());
+
+        Log.d(TAG,"SCREEN "+GameParameterSingleton.SCREEN_HEIGHT+","+GameParameterSingleton.SCREEN_WIDTH);
+
+
+
+        paint = new Paint();
+        paint.setColor(Color.WHITE);
+
+        //thread = new Thread();
+        //thread.start();
 
     }
 
-    @Override
+    protected void onDraw(Canvas canvas) {
+        bg.draw(canvas);
+        combo.draw(canvas);
+        bird.draw(canvas);
+
+        canvas.drawText("Pontos = "+GameParameterSingleton.PONTOS, GameParameterSingleton.SCREEN_WIDTH-100, 50, paint);
+
+
+    }
+
     public void run() {
-        while (true){
+
+        while (running) {
+            this.postInvalidate();
             try {
-                this.update();
-                postInvalidate();
+                update();
                 Thread.sleep(50);
-            }
-            catch (Exception ex){
-                Log.d(TAG, "Erro no Loop do jogo.");
+            } catch (Exception e) {
+
             }
         }
     }
+
+    public boolean onTouchEvent(MotionEvent evt) {
+        if (!running) {
+            running = true;
+            thread.start();
+            return true;
+        }
+        if (evt.getAction() == MotionEvent.ACTION_DOWN) {
+            bird.setDirecao(Bird.SOBE);
+            return true;
+        }
+        if (evt.getAction() == MotionEvent.ACTION_UP) {
+            bird.setDirecao(Bird.DESCE);
+            return true;
+
+        }
+
+        return false;
+    }
+
+    public void update() {
+        if (update) {
+            bird.update();
+            bg.update();
+            combo.update();
+
+            if (bird.getBoundingBox().getY() <= 0) {
+                notifyFinish();
+            }
+            else if (bird.getBoundingBox().getY() + bird.getBoundingBox().getHeight() >= GameParameterSingleton.SCREEN_HEIGHT) {
+                notifyFinish();
+            }
+
+            else if (GameParameterSingleton.detectColision(bird, combo.getObstacleUp())){
+                notifyFinish();
+            }
+
+            else if (GameParameterSingleton.detectColision(bird, combo.getObstacleDown())){
+                notifyFinish();
+            }
+
+            if (!colidiuGap){
+                if (GameParameterSingleton.detectColision(bird, combo.getGap())){
+                    colidiuGap = true;
+                }
+            }
+            else{
+                if (!GameParameterSingleton.detectColision(bird, combo.getGap())){
+                    colidiuGap = false;
+                    GameParameterSingleton.PONTOS++;
+                    Log.d(TAG,"Pontos = "+GameParameterSingleton.PONTOS);
+                }
+            }
+
+
+
+            //regra para ficar criando cada vez mais obstaculos
+            if (combo.getGap().getX()+combo.getGap().getWidth() <= 0){
+                combo = new Structure();
+            }
+        }
+    }
+
+    public void setHandler(Handler handler) {
+        this.handler = handler;
+    }
+
+    public void notifyFinish(){
+        update = false;
+        Message msg = new Message();
+        msg.what = 100;  // tipo, acabou aquele jogo
+        handler.sendMessage(msg);
+    }
+
+
+
+
+
 }

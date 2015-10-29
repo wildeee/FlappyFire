@@ -1,68 +1,81 @@
 package flappyfirebird.wilde.com.br.flappyfire;
 
+import java.io.InputStream;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
-import java.io.InputStream;
-
 public class Obstacle extends GameCoiso {
-
+    private static final String TAG="Obstacle";
     private Bitmap figura;
-    private Rect src;
-    private Rect dst;
+    private Rect   src;
+    private Rect   dst;
+    private int    spriteColumn;
 
-    private int spriteColumn;
+    private int    spriteWidth;
+    private int    spriteHeigth;
 
-    private int spriteWidth;
-    private int spriteHeight;
+    private Paint paint;
 
-    private static final int STEP = 5;
+    private static final int STEP=5;
 
-    private static final String TAG = "Obstacle";
-
-    public Obstacle() {
-        try {
-            InputStream is = GameParameterSingleton.assetManager.open("obstacle.png");
+    public Obstacle(int x, int y){
+        try{
+            paint = new Paint();
+            paint.setColor(Color.BLACK);
+            InputStream is = GameParameterSingleton.assetManager.open("obstaculo2.png");
             figura = BitmapFactory.decodeStream(is);
-
-            spriteWidth = figura.getWidth();
-            spriteHeight = figura.getHeight();
-
-            setWidth(spriteHeight);
-            setHeight(spriteHeight);
-
-            src = new Rect(0, 0, getWidth(), getHeight());
+            setX(x);
+            setY(y);
+            spriteWidth = figura.getWidth()/4;
+            spriteHeigth = figura.getHeight();
+            setWidth(spriteWidth);
+            setHeight(spriteHeigth);
+            src = new Rect(0,0,getWidth(), getHeight());
             dst = new Rect();
         }
-        catch (Exception ex){
-            Log.d(TAG, "Erro ao carregar imagem.");
+        catch(Exception e){
+            Log.d(TAG,"Error on loading Image");
         }
     }
 
+
+
     @Override
     public void update() {
-
+        // TODO Auto-generated method stub
         int passoDistorcido = (int)(this.STEP * GameParameterSingleton.DISTORTION);
-        setX(getX() - passoDistorcido);
+        setX(getX()-passoDistorcido);
+        getBoundingBox().setX(getX() - passoDistorcido);
 
-        src.left = spriteColumn * spriteWidth;
+        src.left = spriteColumn*spriteWidth;
         src.right = src.left + spriteWidth;
         src.top = 0;
-        src.bottom = spriteHeight;
+        src.bottom = spriteHeigth;
 
         dst.left = getX();
         dst.right = dst.left + getWidth();
         dst.top = getY();
         dst.bottom = getY() + getHeight();
 
-        spriteColumn = (spriteColumn + 1) % 4;
+        spriteColumn = (spriteColumn+1)%4;
     }
 
     @Override
-    public void drow(Canvas canvas) {
-        canvas.drawBitmap(figura, src, dst, null);;
+    public void draw(Canvas canvas) {
+        // TODO Auto-generated method stub
+        canvas.drawBitmap(figura,  src,  dst, null);
+		/*canvas.drawRect(getBoundingBox().getX(),
+				        getBoundingBox().getY(),
+				        getBoundingBox().getX()+getBoundingBox().getWidth(),
+				        getBoundingBox().getY()+ getBoundingBox().getHeight(),
+				        paint);*/
+
     }
+
 }
