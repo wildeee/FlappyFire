@@ -28,8 +28,6 @@ public class Bird extends GameCoiso {
 
     public static final float boundingBoxReduction = 0.4f;
 
-    private Paint paint;
-
     public Bird(){
         try{
 			/* ler o arquivo de imagem */
@@ -46,10 +44,6 @@ public class Bird extends GameCoiso {
             // ajustando o bounding box;
             spriteColumn = 0;
             dst = new Rect();
-
-            paint = new Paint();
-            paint.setColor(Color.BLACK);
-
 
         }
         catch(Exception e){
@@ -89,14 +83,7 @@ public class Bird extends GameCoiso {
 
     @Override
     public void draw(Canvas canvas) {
-        // TODO Auto-generated method stub
-
-		canvas.drawRect(getBoundingBox().getX(),
-				        getBoundingBox().getY(),
-				        getBoundingBox().getX() + getBoundingBox().getWidth(),
-				        getBoundingBox().getY() + getBoundingBox().getHeight(),paint);
         canvas.drawBitmap(bitmap, src, dst, null);
-        //Log.d(TAG,getBoundingBox().toString());
     }
 
 }
