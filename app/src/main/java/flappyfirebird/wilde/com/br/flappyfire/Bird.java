@@ -10,7 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
-public class Bird extends GameCoiso{
+public class Bird extends GameCoiso {
     private static final String TAG="Bird";
     private Bitmap bitmap;
     private int    spriteColumn;
@@ -25,6 +25,8 @@ public class Bird extends GameCoiso{
 
     public static final int STEP_SOBE  = 3;
     public static final int STEP_DESCE = 6;
+
+    public static final float boundingBoxReduction = 0.4f;
 
     private Paint paint;
 
@@ -51,13 +53,12 @@ public class Bird extends GameCoiso{
 
         }
         catch(Exception e){
-            Log.d(TAG,"Erro ao carregar Sprite");
+            Log.d(TAG, "Erro ao carregar Sprite");
         }
     }
 
     @Override
     public void update() {
-        // TODO Auto-generated method stub
 
         if (direcao == SOBE){
             setY(getY()- (int)(STEP_SOBE*GameParameterSingleton.DISTORTION));
@@ -90,10 +91,10 @@ public class Bird extends GameCoiso{
     public void draw(Canvas canvas) {
         // TODO Auto-generated method stub
 
-		/*canvas.drawRect(getBoundingBox().getX(),
+		canvas.drawRect(getBoundingBox().getX(),
 				        getBoundingBox().getY(),
 				        getBoundingBox().getX() + getBoundingBox().getWidth(),
-				        getBoundingBox().getY() + getBoundingBox().getHeight(),paint);*/
+				        getBoundingBox().getY() + getBoundingBox().getHeight(),paint);
         canvas.drawBitmap(bitmap, src, dst, null);
         //Log.d(TAG,getBoundingBox().toString());
     }

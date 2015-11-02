@@ -38,8 +38,8 @@ public abstract class GameCoiso {
         setHeight((int)(getHeight()* GameParameterSingleton.DISTORTION));
         setWidth((int)(getWidth() * GameParameterSingleton.DISTORTION));
 
-        //boundingBox.setWidth((int)(boundingBox.getWidth()*GameParameterSingleton.DISTORTION));
-        //boundingBox.setHeight((int)(boundingBox.getHeight()*GameParameterSingleton.DISTORTION));
+        boundingBox.setWidth((int)(boundingBox.getWidth()*GameParameterSingleton.DISTORTION));
+        boundingBox.setHeight((int)(boundingBox.getHeight()*GameParameterSingleton.DISTORTION));
     }
 
     public BoundingBox getBoundingBox() {

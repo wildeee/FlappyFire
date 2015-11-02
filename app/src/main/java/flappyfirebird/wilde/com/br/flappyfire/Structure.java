@@ -7,19 +7,17 @@ public class Structure {
     private Obstacle obstacleUp;
     private Obstacle obstacleDown;
     private Gap gap;
-    private boolean valid;
 
     public Structure(){
-        valid = true;
         obstacleUp = new Obstacle(GameParameterSingleton.SCREEN_WIDTH, 0);
-        int y = ((int)(Math.random()*1000))%(obstacleUp.getHeight());
-        y = (y>0)?y*-1:y;
+        int y = ((int)(Math.random() * 1000)) % (obstacleUp.getHeight());
+        y = (y > 0) ? y * -1 : y;
         obstacleUp.setY(y);
-
         obstacleUp.updateDistortion();
 
         gap = new Gap(obstacleUp.getX(), obstacleUp.getY() + obstacleUp.getHeight(), 40, 55 );
         gap.updateDistortion();
+
         obstacleDown = new Obstacle(gap.getX(), gap.getY()+gap.getHeight());
         obstacleDown.updateDistortion();
 

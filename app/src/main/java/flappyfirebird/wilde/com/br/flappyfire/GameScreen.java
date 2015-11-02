@@ -43,15 +43,12 @@ public class GameScreen extends View implements Runnable {
         running = true;
         update = true;
         bg = new InfiniteBackground();
-        GameParameterSingleton.DISTORTION = (float) GameParameterSingleton.SCREEN_HEIGHT
-                / bg.getHeight();
+        GameParameterSingleton.DISTORTION = (float) GameParameterSingleton.SCREEN_HEIGHT / bg.getHeight();
 
 
-        Log.d(TAG,"Distortion = "+GameParameterSingleton.DISTORTION);
         bg.updateDistortion();
 
         bird = new Bird();
-        Log.d("TAG","Bird = "+bird.getWidth()+","+bird.getHeight());
 
 
         combo = new Structure();
@@ -61,26 +58,17 @@ public class GameScreen extends View implements Runnable {
 
 
         bird.updateDistortion();
-        Log.d("TAG","BirdD = "+bird.getWidth()+","+bird.getHeight());
+        Log.d("TAG", "BirdD = " + bird.getWidth() + "," + bird.getHeight());
 
         // ajustando bounding box do bird;
-        bird.getBoundingBox().setWidth((int)(bird.getWidth()*0.10f));
-        bird.getBoundingBox().setHeight((int)(bird.getHeight()*0.10));
-        bird.getBoundingBox().setX(bird.getX() + (int)((bird.getWidth() - bird.getBoundingBox().getWidth())*.10f));
-        bird.getBoundingBox().setY(bird.getY() + (int)((bird.getHeight() - bird.getBoundingBox().getHeight())*0.10f));
-
-
-        Log.d(TAG,bird.getBoundingBox().toString());
-
-        Log.d(TAG,"SCREEN "+GameParameterSingleton.SCREEN_HEIGHT+","+GameParameterSingleton.SCREEN_WIDTH);
-
+        bird.getBoundingBox().setWidth((int) (bird.getWidth() * Bird.boundingBoxReduction));
+        bird.getBoundingBox().setHeight((int) (bird.getHeight() * Bird.boundingBoxReduction));
+        bird.getBoundingBox().setX(bird.getX() + (int)((bird.getWidth() - bird.getBoundingBox().getWidth()) * Bird.boundingBoxReduction));
+        bird.getBoundingBox().setY(bird.getY() + (int)((bird.getHeight() - bird.getBoundingBox().getHeight()) * Bird.boundingBoxReduction));
 
 
         paint = new Paint();
         paint.setColor(Color.WHITE);
-
-        //thread = new Thread();
-        //thread.start();
 
     }
 

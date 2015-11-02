@@ -15,12 +15,14 @@ public class GameActivity extends Activity {
 
     GameScreen minhaView;
     Handler handler;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-		/* Ajustando parâmetros globais na Activity;
-		 */
+		// Ajustando parametros globais na Activity;
+
         setGlobalParameters();
         handler = new Handler(){
             public void handleMessage(Message msg){
@@ -53,9 +55,11 @@ public class GameActivity extends Activity {
         /* ajustando outros parâmetros de tela */
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);  // tela cheia
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);                     // sem a barrinha de título
     }
 
+    @Override
     public void onPause(){
         super.onPause();
         this.finish();
@@ -70,20 +74,16 @@ public class GameActivity extends Activity {
         Button btnFinish = (Button)findViewById(R.id.btnFinish);
 
         btnAgain.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View arg0) {
-                // TODO Auto-generated method stub
                 setContentView(minhaView);
                 minhaView.init();
             }
         });
 
         btnFinish.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 finish();
             }
         });
