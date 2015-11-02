@@ -19,12 +19,7 @@ public class Bird extends GameCoiso {
     private int    imageWidth;
     private int    imageHeight;
 
-    private int    direcao;
-    public static final int SOBE=1;
-    public static final int DESCE=0;
-
-    public static final int STEP_SOBE  = 3;
-    public static final int STEP_DESCE = 6;
+    private EMovementType direcao;
 
     public static final float boundingBoxReduction = 0.4f;
 
@@ -45,6 +40,9 @@ public class Bird extends GameCoiso {
             spriteColumn = 0;
             dst = new Rect();
 
+            //setando direção inicial
+            direcao = EMovementType.DESCE;
+
         }
         catch(Exception e){
             Log.d(TAG, "Erro ao carregar Sprite");
@@ -54,13 +52,13 @@ public class Bird extends GameCoiso {
     @Override
     public void update() {
 
-        if (direcao == SOBE){
-            setY(getY()- (int)(STEP_SOBE*GameParameterSingleton.DISTORTION));
-            getBoundingBox().setY(getBoundingBox().getY()- (int)(STEP_SOBE*GameParameterSingleton.DISTORTION));
+        if (direcao == EMovementType.SOBE){
+            setY(getY() - (int)(direcao.getStep() * GameParameterSingleton.DISTORTION));
+            getBoundingBox().setY(getBoundingBox().getY() - (int)(direcao.getStep() * GameParameterSingleton.DISTORTION));
         }
         else{
-            setY(getY() + (int)(STEP_DESCE*GameParameterSingleton.DISTORTION));
-            getBoundingBox().setY(getBoundingBox().getY()+ (int)(STEP_DESCE*GameParameterSingleton.DISTORTION));
+            setY(getY() + (int)(direcao.getStep() * GameParameterSingleton.DISTORTION));
+            getBoundingBox().setY(getBoundingBox().getY() + (int)(direcao.getStep() * GameParameterSingleton.DISTORTION));
         }
         src.left = spriteColumn*imageWidth;
         src.right = src.left + imageWidth;
@@ -73,11 +71,11 @@ public class Bird extends GameCoiso {
         dst.bottom = dst.top + super.getHeight();
     }
 
-    public int getDirecao() {
+    public EMovementType getDirecao() {
         return direcao;
     }
 
-    public void setDirecao(int direcao) {
+    public void setDirecao(EMovementType direcao) {
         this.direcao = direcao;
     }
 

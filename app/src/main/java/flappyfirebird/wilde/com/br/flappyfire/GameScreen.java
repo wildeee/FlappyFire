@@ -102,11 +102,11 @@ public class GameScreen extends View implements Runnable {
             return true;
         }
         if (evt.getAction() == MotionEvent.ACTION_DOWN) {
-            bird.setDirecao(Bird.SOBE);
+            bird.setDirecao(EMovementType.SOBE);
             return true;
         }
         if (evt.getAction() == MotionEvent.ACTION_UP) {
-            bird.setDirecao(Bird.DESCE);
+            bird.setDirecao(EMovementType.DESCE);
             return true;
 
         }
